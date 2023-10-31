@@ -29,9 +29,9 @@ public class FireView extends JFrame {
       this.viewer = new Viewer();
       this.controller = controller;
       actionListener = new Listener();
-      this.controlPanel = new ControlPanel(actionListener);
       configureFrame();
 
+      this.controlPanel = new ControlPanel(panel, actionListener);
 
       this.viewer.loadBackground(controlPanel.getGeneralParameters().getBackgroundImage());
       this.setSize(800, 600);
@@ -44,7 +44,6 @@ public class FireView extends JFrame {
 
       this.panel = this.getContentPane();
       addViewerToPane(panel);
-      addControlToPane(panel);
    }
 
    private void configureFrame() {
@@ -65,25 +64,10 @@ public class FireView extends JFrame {
       c.gridy = 0;
       c.weightx = 1;
       c.weighty = 1;
-      c.gridheight = 2;
+      c.gridheight = 20;
       c.gridwidth = 1;
 
       panel.add(this.viewer, c);
-   }
-   
-   private void addControlToPane(Container panel) {
-      GridBagConstraints c = new GridBagConstraints();
-
-      c.anchor = GridBagConstraints.NORTHWEST;
-      c.fill = GridBagConstraints.VERTICAL;
-      c.gridx = 0;
-      c.gridy = 1;
-      c.weightx = 1;
-      c.weighty = 1;
-      c.gridheight = 2;
-      c.gridwidth = 1;
-      
-      panel.add(this.controlPanel, c);
    }
 
    // GETTERS AND SETTERS
@@ -147,22 +131,28 @@ public class FireView extends JFrame {
 
                try {
 
-                  controlPanel.getGeneralParameters().setFireHight(controlPanel.getGeneralConfiguration().getHeigh());
+                  controlPanel.getGeneralParameters().setFireHight(
+                        Integer.parseInt(controlPanel.getGeneralConfiguration().getHeigh().getText()));
                } catch (Exception f) {
                }
                try {
 
-                  controlPanel.getGeneralParameters().setFireWidth(controlPanel.getGeneralConfiguration().getWidth());
+                  controlPanel.getGeneralParameters().setFireWidth(
+                        Integer.parseInt(controlPanel.getGeneralConfiguration().getWidth().getText()));
                } catch (Exception f) {
                }
                try {
 
-                  controlPanel.getGeneralParameters().setFirXPosition(controlPanel.getGeneralConfiguration().getPosX());
+                  controlPanel.getGeneralParameters()
+                        .setFirXPosition(
+                              Integer.parseInt(controlPanel.getGeneralConfiguration().getPosX().getText()));
                } catch (Exception f) {
                }
                try {
 
-                  controlPanel.getGeneralParameters().setFireYPosition(controlPanel.getGeneralConfiguration().getPosY());
+                  controlPanel.getGeneralParameters()
+                        .setFireYPosition(
+                              Integer.parseInt(controlPanel.getGeneralConfiguration().getPosY().getText()));
                } catch (Exception f) {
                }
                updated = true;
