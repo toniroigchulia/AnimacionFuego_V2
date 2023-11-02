@@ -44,7 +44,7 @@ public class TemperatureConfiguration {
         // NewCollPixelsPercentage
         c.gridy = 17;
         c.insets = new Insets(10, 10, 1, 10);
-        newCoolPixelsPercentageName = new JLabel("NewCoolPixelsPercentage");
+        newCoolPixelsPercentageName = new JLabel("CoolPixelsPercentage");
         panel.add(newCoolPixelsPercentageName, c);
 
         c.gridy++;
@@ -55,7 +55,7 @@ public class TemperatureConfiguration {
         // NewHotPixelsPercentage
         c.gridy++;
         c.insets = new Insets(10, 10, 1, 10);
-        newHotPixelsPercentageName = new JLabel("NewHotPixelsPercentage");
+        newHotPixelsPercentageName = new JLabel("HotPixelsPercentage");
         panel.add(newHotPixelsPercentageName, c);
 
         c.gridy++;

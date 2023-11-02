@@ -97,7 +97,7 @@ public class ControlPanel extends JPanel {
         try {
 
             File selectedFile = new File(
-                    "C:\\Users\\toni1\\OneDrive\\Documentos\\DAM\\2nDAM\\Interfaces\\AnimacionFuego_V2\\AnimacionFuego_V2\\imagen\\bg.jpg");
+                    "imagen\\bg.jpg");
             BufferedImage selectedImage = ImageIO.read(selectedFile);
             generalParameters.setBackgroundImage(selectedImage);
             generalConfiguration.setImageParameters(selectedFile.getName(),
