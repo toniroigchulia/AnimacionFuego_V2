@@ -1,11 +1,12 @@
+
 public class DTOTemperatureParameters {
 
     // ATRIBUTOS
 
     private float newCoolPixelsPercentage = (float) 0.9;
     private float newHotPixelsPercentage = (float) 0.3;
-    private double cellsPonderation;
-    private double cellsDivider;
+    private double[][] cellsPonderation;
+    private int cellsDivider = 6;
     private double fixAtenuationFactor;
     private boolean bottonUpTemps;
 
@@ -33,19 +34,19 @@ public class DTOTemperatureParameters {
         this.newHotPixelsPercentage = newHotPixelsPercentage;
     }
 
-    public double getCellsPonderation() {
+    public double[][] getCellsPonderation() {
         return cellsPonderation;
     }
 
-    public void setCellsPonderation(double cellsPonderation) {
+    public void setCellsPonderation(double[][] cellsPonderation) {
         this.cellsPonderation = cellsPonderation;
     }
 
-    public double getCellsDivider() {
+    public int getCellsDivider() {
         return cellsDivider;
     }
 
-    public void setCellsDivider(double cellsDivider) {
+    public void setCellsDivider(int cellsDivider) {
         this.cellsDivider = cellsDivider;
     }
 
@@ -63,5 +64,6 @@ public class DTOTemperatureParameters {
 
     public void setBottonUpTemps(boolean bottonUpTemps) {
         this.bottonUpTemps = bottonUpTemps;
+        System.out.println(this.bottonUpTemps);
     }
 }

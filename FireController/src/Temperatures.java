@@ -12,14 +12,20 @@ public class Temperatures {
 
     private float coldPointPercentatge;
     private float sparkPercentatge;
+    private double[][] cellsPonderation;
+    private int cellsDivider;
+    private double fixAtenuationFactor;
 
     // CONSTRUCTORES
 
-    public Temperatures(float coldChance, float sparkChance) {
+    public Temperatures(DTOTemperatureParameters temperatureParameters) {
         
         this.tempertureMap = new int[height][width];
-        setcoldPointPercentatge(coldChance);
-        setsparkPercentatge(sparkChance);
+        setcoldPointPercentatge(temperatureParameters.getNewCoolPixelsPercentage());
+        setsparkPercentatge(temperatureParameters.getNewHotPixelsPercentage());
+        setCellsPonderation(temperatureParameters.getCellsPonderation());
+        setCellsDivider(temperatureParameters.getCellsDivider());
+        setFixAtenuationFactor(temperatureParameters.getFixAtenuationFactor());
         
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -112,7 +118,7 @@ public class Temperatures {
                 posCentD = this.tempertureMap[i + 1][j];
                 posDerD = this.tempertureMap[i + 1][j + 1];
 
-                mediaTemp = (posInc + posIzqD + posCentD + posDerD + posDer + posIzq) / 6;
+                mediaTemp = (posInc + posIzqD + posCentD + posDerD + posDer + posIzq) / this.cellsDivider;
 
                 this.tempertureMap[i][j] = mediaTemp;
             }
@@ -143,5 +149,29 @@ public class Temperatures {
 
     public void setsparkPercentatge(float sparkChance) {
         this.sparkPercentatge = sparkChance;
+    }
+
+    public double[][] getCellsPonderation() {
+        return cellsPonderation;
+    }
+
+    public void setCellsPonderation(double[][] cellsPonderation) {
+        this.cellsPonderation = cellsPonderation;
+    }
+
+    public int getCellsDivider() {
+        return cellsDivider;
+    }
+
+    public void setCellsDivider(int cellsDivider) {
+        this.cellsDivider = cellsDivider;
+    }
+
+    public double getFixAtenuationFactor() {
+        return fixAtenuationFactor;
+    }
+
+    public void setFixAtenuationFactor(double fixAtenuationFactor) {
+        this.fixAtenuationFactor = fixAtenuationFactor;
     }
 }

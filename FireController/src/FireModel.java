@@ -26,9 +26,7 @@ public class FireModel extends BufferedImage {
         this.colorPalette.calc();
 
         // Temperaturas
-        this.temperatures = new Temperatures(
-                fireModelParameters.getTemperatureParameters().getNewCoolPixelsPercentage(),
-                fireModelParameters.getTemperatureParameters().getNewHotPixelsPercentage());
+        this.temperatures = new Temperatures(fireModelParameters.getTemperatureParameters());
     }
 
     // METODOS
