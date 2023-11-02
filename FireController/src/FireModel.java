@@ -39,8 +39,16 @@ public class FireModel extends BufferedImage {
         for (int i = 0; i < temperatures.getHeight() - 2; i++) {
             for (int j = 0; j < temperatures.getWidth(); j++) {
 
-                int tempAct = temperatures.tempertureMap[i][j];
-
+                int tempAct = (int) (temperatures.tempertureMap[i][j]);
+                
+                if (tempAct > 255) {
+                
+                    tempAct = 235;
+                } else if (tempAct < 0) {
+                
+                    tempAct = 0;
+                }
+                
                 Color colorAct = colorPalette.colorsPalette[tempAct];
 
                 this.setRGB(j, i, colorAct.getRGB());

@@ -124,6 +124,7 @@ public class FireView extends JFrame {
                viewer.loadBackground(controlPanel.getGeneralParameters().getBackgroundImage());
 
                controlPanel.getGeneralConfiguration().resetValues();
+               controlPanel.getTemperatureConfiguration().defaultValues();
                updated = true;
                break;
             // Aplicar los cambios

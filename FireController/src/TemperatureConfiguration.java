@@ -1,7 +1,6 @@
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 import javax.swing.JSlider;
@@ -28,6 +27,7 @@ public class TemperatureConfiguration {
     public TemperatureConfiguration(Container panel) {
 
         addContentToPane(panel);
+        defaultValues();
     }
 
     private void addContentToPane(Container panel) {
@@ -103,6 +103,20 @@ public class TemperatureConfiguration {
         panel.add(bottomUpTemps, c);
     }
 
+    public void defaultValues() {
+        cellsPonderation.setValueAt("1.2", 0, 0);
+        cellsPonderation.setValueAt("1.2", 0, 2);
+        cellsPonderation.setValueAt("1.3", 0, 1);
+        cellsPonderation.setValueAt("1", 1, 1);
+        cellsPonderation.setValueAt("0.7", 1, 2);
+        cellsPonderation.setValueAt("0.7", 1, 0);
+        
+        fixAtenuationFactor.setText("4");
+        cellsDivider.setText("6.2");
+        newCoolPixelsPercentage.setValue(90);
+        newHotPixelsPercentage.setValue(30);
+    }
+
     // GETTERS AND SETTERS
 
     public float getNewCoolPixelsPercentage() {
@@ -116,18 +130,18 @@ public class TemperatureConfiguration {
     public double[][] getCellsPonderation() {
         double[][] cellsPonderationMatrix = new double[2][3];
 
-        for (int i=0; i < 2; i++){
-            for (int j=0; j < 3; j++){
-
-                cellsPonderationMatrix[i][j] = ((Number) cellsPonderation.getValueAt(i, j)).doubleValue();
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 3; j++) {
+                
+                cellsPonderationMatrix[i][j] = Double.parseDouble(cellsPonderation.getValueAt(i, j)+"");
             }
         }
 
         return cellsPonderationMatrix;
     }
 
-    public int getCellsDivider() {
-        return Integer.parseInt(cellsDivider.getText());
+    public double getCellsDivider() {
+        return Double.parseDouble(cellsDivider.getText());
     }
 
     public double getFixAtenuationFactor() {
@@ -136,5 +150,5 @@ public class TemperatureConfiguration {
 
     public boolean bottomUpTemps() {
         return bottomUpTemps.isSelected();
-    } 
+    }
 }
