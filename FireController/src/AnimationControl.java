@@ -57,14 +57,14 @@ public class AnimationControl extends JPanel {
         panel.add(stopButton, c);
 
         // Apply
-        c.gridy = 11;
+        c.gridy = 3;
         c.insets = new Insets(10, 10, 10, 10);
         aplly = new JButton("Apply");
         aplly.addActionListener(actionListener);
         panel.add(aplly, c);
 
         // Reset
-        c.gridy = 12;
+        c.gridy = 4;
         c.insets = new Insets(10, 10, 10, 10);
         reset = new JButton("Reset");
         reset.addActionListener(actionListener);
@@ -72,7 +72,7 @@ public class AnimationControl extends JPanel {
 
         // ImageButton
         c.gridy = 13;
-        c.insets = new Insets(15, 10, 10, 10);
+        c.insets = new Insets(10, 10, 10, 10);
         imageButton = new JButton("Change Background");
         imageButton.addActionListener(actionListener);
         panel.add(imageButton, c);

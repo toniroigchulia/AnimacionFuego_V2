@@ -34,7 +34,7 @@ public class FireView extends JFrame {
       this.controlPanel = new ControlPanel(panel, actionListener);
 
       this.viewer.loadBackground(controlPanel.getGeneralParameters().getBackgroundImage());
-      this.setSize(800, 600);
+      this.setSize(1200, 920);
    }
 
    // METODOS
@@ -64,7 +64,7 @@ public class FireView extends JFrame {
       c.gridy = 0;
       c.weightx = 1;
       c.weighty = 1;
-      c.gridheight = 20;
+      c.gridheight = 50;
       c.gridwidth = 1;
 
       panel.add(this.viewer, c);
@@ -110,54 +110,40 @@ public class FireView extends JFrame {
                controller.setAnimation(false);
                controlPanel.getAnimationControl().getAplly().setEnabled(true);
                break;
-
             // Resetear los parametors a los default
             case "Reset":
 
                controller.setAnimation(false);
                controlPanel.setGeneralParameters(new DTOGeneralParameters());
+               controlPanel.setTemperatureParameters(new DTOTemperatureParameters());
+               
                controlPanel.getAnimationControl().getAplly().setEnabled(true);
-
+               
                // Poner el background Default
                controlPanel.setDefaultBackgroundImage();
                viewer.loadBackground(controlPanel.getGeneralParameters().getBackgroundImage());
 
                controlPanel.getGeneralConfiguration().resetValues();
+               controlPanel.getTemperatureConfiguration().defaultValues();
                updated = true;
                break;
-
             // Aplicar los cambios
             case "Apply":
 
-               try {
+                  controlPanel.getGeneralParameters().setFireHight(controlPanel.getGeneralConfiguration().getHeigh());
+                  controlPanel.getGeneralParameters().setFireWidth(controlPanel.getGeneralConfiguration().getWidth());
+                  controlPanel.getGeneralParameters().setFirXPosition(controlPanel.getGeneralConfiguration().getPosX());
+                  controlPanel.getGeneralParameters().setFireYPosition(controlPanel.getGeneralConfiguration().getPosY());
 
-                  controlPanel.getGeneralParameters().setFireHight(
-                        Integer.parseInt(controlPanel.getGeneralConfiguration().getHeigh().getText()));
-               } catch (Exception f) {
-               }
-               try {
+                  controlPanel.getTemperatureParameters().setBottonUpTemps(controlPanel.getTemperatureConfiguration().bottomUpTemps());
+                  controlPanel.getTemperatureParameters().setNewCoolPixelsPercentage(controlPanel.getTemperatureConfiguration().getNewCoolPixelsPercentage());
+                  controlPanel.getTemperatureParameters().setNewHotPixelsPercentage(controlPanel.getTemperatureConfiguration().getNewHotPixelsPercentage());
+                  controlPanel.getTemperatureParameters().setCellsDivider(controlPanel.getTemperatureConfiguration().getCellsDivider());
+                  controlPanel.getTemperatureParameters().setCellsPonderation(controlPanel.getTemperatureConfiguration().getCellsPonderation());
+                  controlPanel.getTemperatureParameters().setFixAtenuationFactor(controlPanel.getTemperatureConfiguration().getFixAtenuationFactor());
 
-                  controlPanel.getGeneralParameters().setFireWidth(
-                        Integer.parseInt(controlPanel.getGeneralConfiguration().getWidth().getText()));
-               } catch (Exception f) {
-               }
-               try {
-
-                  controlPanel.getGeneralParameters()
-                        .setFirXPosition(
-                              Integer.parseInt(controlPanel.getGeneralConfiguration().getPosX().getText()));
-               } catch (Exception f) {
-               }
-               try {
-
-                  controlPanel.getGeneralParameters()
-                        .setFireYPosition(
-                              Integer.parseInt(controlPanel.getGeneralConfiguration().getPosY().getText()));
-               } catch (Exception f) {
-               }
                updated = true;
                break;
-
             // Cambiar el Background
             case "Change Background":
                JFileChooser fileChooser = new JFileChooser();

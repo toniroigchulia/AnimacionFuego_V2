@@ -6,20 +6,26 @@ public class Temperatures {
 
     Random rand = new Random();
 
-    public int[][] tempertureMap;
+    public double[][] tempertureMap;
     private int width = 255;
     private int height = 95;
 
     private float coldPointPercentatge;
     private float sparkPercentatge;
+    private double[][] cellsPonderation;
+    private double cellsDivider;
+    private double fixAtenuationFactor;
 
     // CONSTRUCTORES
 
-    public Temperatures(float coldChance, float sparkChance) {
+    public Temperatures(DTOTemperatureParameters temperatureParameters) {
         
-        this.tempertureMap = new int[height][width];
-        setcoldPointPercentatge(coldChance);
-        setsparkPercentatge(sparkChance);
+        this.tempertureMap = new double[height][width];
+        setcoldPointPercentatge(temperatureParameters.getNewCoolPixelsPercentage());
+        setsparkPercentatge(temperatureParameters.getNewHotPixelsPercentage());
+        setCellsPonderation(temperatureParameters.getCellsPonderation());
+        setCellsDivider(temperatureParameters.getCellsDivider());
+        setFixAtenuationFactor(temperatureParameters.getFixAtenuationFactor());
         
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -70,13 +76,13 @@ public class Temperatures {
     private void calc() {
 
         // Variables para posiciones
-        int posInc;
-        int posDer;
-        int posIzq;
+        double posInc;
+        double posDer;
+        double posIzq;
 
-        int posCentD;
-        int posDerD;
-        int posIzqD;
+        double posCentD;
+        double posDerD;
+        double posIzqD;
 
         // Variable para guardar temperatura
         int mediaTemp;
@@ -84,35 +90,35 @@ public class Temperatures {
         for (int i = height - 2; i > -1; i--) {
 
             // Calculamos la temperatura de la primera columna
-            posInc = this.tempertureMap[i][0];
-            posDer = this.tempertureMap[i][1];
-            posCentD = this.tempertureMap[i + 1][0];
-            posDerD = this.tempertureMap[i + 1][1];
+            posInc = (this.tempertureMap[i][0] * cellsPonderation[0][1]);
+            posDer = (this.tempertureMap[i][1] * cellsPonderation[0][2]);
+            posCentD =  (this.tempertureMap[i + 1][0] * cellsPonderation[1][1]);
+            posDerD =  (this.tempertureMap[i + 1][1] * cellsPonderation[1][2]);
 
-            mediaTemp = (posInc + posCentD + posDerD + posDer) / 4;
+            mediaTemp = (int) (((posInc + posCentD + posDerD + posDer) / (this.cellsDivider))- fixAtenuationFactor);
             this.tempertureMap[i][0] = mediaTemp;
 
             // Calculamos la temperatura de la ultima columna
-            posInc = this.tempertureMap[i][width - 1];
-            posCentD = this.tempertureMap[i + 1][width - 1];
-            posIzqD = this.tempertureMap[i + 1][width - 2];
-            posIzq = this.tempertureMap[i][width - 2];
+            posInc = (this.tempertureMap[i][width - 1] * cellsPonderation[0][1]);
+            posCentD =  (this.tempertureMap[i + 1][width - 1] * cellsPonderation[1][1]);
+            posIzqD =  (this.tempertureMap[i + 1][width - 2] * cellsPonderation[1][0]);
+            posIzq =  (this.tempertureMap[i][width - 2] * cellsPonderation[0][0]);
 
-            mediaTemp = (posInc + posIzqD + posCentD + posIzq) / 4;
+            mediaTemp = (int) (((posInc + posIzqD + posCentD + posIzq) / (this.cellsDivider)) - fixAtenuationFactor);
             this.tempertureMap[i][width - 1] = mediaTemp;
 
             // Calculamos todos los valores de entremedias
             for (int j = 1; j < width - 1; j++) {
 
-                posInc = this.tempertureMap[i][j];
-                posDer = this.tempertureMap[i][j + 1];
-                posIzq = this.tempertureMap[i][j - 1];
+                posInc =  (this.tempertureMap[i][j] * cellsPonderation[0][1]);
+                posDer =  (this.tempertureMap[i][j + 1] * cellsPonderation[0][2]);
+                posIzq =  (this.tempertureMap[i][j - 1] * cellsPonderation[0][0]);
 
-                posIzqD = this.tempertureMap[i + 1][j - 1];
-                posCentD = this.tempertureMap[i + 1][j];
-                posDerD = this.tempertureMap[i + 1][j + 1];
+                posIzqD = (this.tempertureMap[i + 1][j - 1] * cellsPonderation[0][0]);
+                posCentD = (this.tempertureMap[i + 1][j] * cellsPonderation[1][1]);
+                posDerD =  (this.tempertureMap[i + 1][j + 1] * cellsPonderation[1][2]);
 
-                mediaTemp = (posInc + posIzqD + posCentD + posDerD + posDer + posIzq) / 6;
+                mediaTemp = (int) (((posInc + posIzqD + posCentD + posDerD + posDer + posIzq) / this.cellsDivider) - fixAtenuationFactor);
 
                 this.tempertureMap[i][j] = mediaTemp;
             }
@@ -143,5 +149,29 @@ public class Temperatures {
 
     public void setsparkPercentatge(float sparkChance) {
         this.sparkPercentatge = sparkChance;
+    }
+
+    public double[][] getCellsPonderation() {
+        return cellsPonderation;
+    }
+
+    public void setCellsPonderation(double[][] cellsPonderation) {
+        this.cellsPonderation = cellsPonderation;
+    }
+
+    public double getCellsDivider() {
+        return cellsDivider;
+    }
+
+    public void setCellsDivider(double cellsDivider) {
+        this.cellsDivider = cellsDivider;
+    }
+
+    public double getFixAtenuationFactor() {
+        return fixAtenuationFactor;
+    }
+
+    public void setFixAtenuationFactor(double fixAtenuationFactor) {
+        this.fixAtenuationFactor = fixAtenuationFactor;
     }
 }

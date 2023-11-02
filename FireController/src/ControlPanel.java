@@ -13,6 +13,7 @@ public class ControlPanel extends JPanel {
     private AnimationControl animationControl;
     private GeneralConfiguration generalConfiguration;
     private ActionListener actionListener;
+    private TemperatureConfiguration temperatureConfiguration;
 
     private DTOGeneralParameters generalParameters;
     private DTOTemperatureParameters temperatureParameters;
@@ -26,6 +27,7 @@ public class ControlPanel extends JPanel {
         this.actionListener = actionListener;
         this.animationControl = new AnimationControl(panel, actionListener);
         this.generalConfiguration = new GeneralConfiguration(panel);
+        this.temperatureConfiguration = new TemperatureConfiguration(panel);
 
         this.temperatureParameters = new DTOTemperatureParameters();
         this.paletteConfiguration = new DTOPaletteParameters();
@@ -104,5 +106,17 @@ public class ControlPanel extends JPanel {
             System.err.println("Error loading background. ");
             System.err.println(e);
         }
+    }
+
+    public void setGeneralConfiguration(GeneralConfiguration generalConfiguration) {
+        this.generalConfiguration = generalConfiguration;
+    }
+
+    public TemperatureConfiguration getTemperatureConfiguration() {
+        return temperatureConfiguration;
+    }
+
+    public void setTemperatureConfiguration(TemperatureConfiguration temperatureConfiguration) {
+        this.temperatureConfiguration = temperatureConfiguration;
     }
 }
