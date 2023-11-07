@@ -26,12 +26,16 @@ public class TemperatureConfiguration extends JPanel {
     private JTextField fixAtenuationFactor;
     private JToggleButton bottomUpTemps;
 
+    // CONSTRUCTOR
+
     public TemperatureConfiguration() {
         this.setLayout(new GridBagLayout());
         addContentToPane(this);
         defaultValues();
     }
-
+    
+    // METODOS
+    
     private void addContentToPane(Container panel) {
         GridBagConstraints c = new GridBagConstraints();
 

@@ -51,7 +51,14 @@ public class PaletteConfiguration extends JPanel {
 
             @Override
             public boolean isCellEditable(int row, int column) {
-                return true;
+                
+                if (row == table.getRowCount() - 1 || row == 0){
+                    
+                    return false;
+                } else {
+                
+                    return true;
+                }
             }
         };
 
@@ -66,7 +73,7 @@ public class PaletteConfiguration extends JPanel {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object[] row = { "", "Temp" };
+                Object[] row = { new Color(255, 255, 255, 255), 255 };
                 model.addRow(row);
             }
         });
