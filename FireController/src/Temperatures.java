@@ -15,18 +15,20 @@ public class Temperatures {
     private double[][] cellsPonderation;
     private double cellsDivider;
     private double fixAtenuationFactor;
+    private boolean bottonUpTemps;
 
     // CONSTRUCTORES
 
     public Temperatures(DTOTemperatureParameters temperatureParameters) {
-        
+
         this.tempertureMap = new double[height][width];
         setcoldPointPercentatge(temperatureParameters.getNewCoolPixelsPercentage());
         setsparkPercentatge(temperatureParameters.getNewHotPixelsPercentage());
         setCellsPonderation(temperatureParameters.getCellsPonderation());
         setCellsDivider(temperatureParameters.getCellsDivider());
         setFixAtenuationFactor(temperatureParameters.getFixAtenuationFactor());
-        
+        setBottonUpTemps(temperatureParameters.isBottonUpTemps());
+
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 this.tempertureMap[i][j] = 0;
@@ -87,40 +89,85 @@ public class Temperatures {
         // Variable para guardar temperatura
         int mediaTemp;
 
-        for (int i = height - 2; i > -1; i--) {
+        if (bottonUpTemps) {
+            for (int i = height - 2; i >= 0; i--) {
 
-            // Calculamos la temperatura de la primera columna
-            posInc = (this.tempertureMap[i][0] * cellsPonderation[0][1]);
-            posDer = (this.tempertureMap[i][1] * cellsPonderation[0][2]);
-            posCentD =  (this.tempertureMap[i + 1][0] * cellsPonderation[1][1]);
-            posDerD =  (this.tempertureMap[i + 1][1] * cellsPonderation[1][2]);
+                // Calculamos la temperatura de la primera columna
+                posInc = (this.tempertureMap[i][0] * cellsPonderation[0][1]);
+                posDer = (this.tempertureMap[i][1] * cellsPonderation[0][2]);
+                posCentD = (this.tempertureMap[i + 1][0] * cellsPonderation[1][1]);
+                posDerD = (this.tempertureMap[i + 1][1] * cellsPonderation[1][2]);
 
-            mediaTemp = (int) (((posInc + posCentD + posDerD + posDer) / (this.cellsDivider))- fixAtenuationFactor);
-            this.tempertureMap[i][0] = mediaTemp;
+                mediaTemp = (int) (((posInc + posCentD + posDerD + posDer) / (this.cellsDivider))
+                        - fixAtenuationFactor);
+                this.tempertureMap[i][0] = mediaTemp;
 
-            // Calculamos la temperatura de la ultima columna
-            posInc = (this.tempertureMap[i][width - 1] * cellsPonderation[0][1]);
-            posCentD =  (this.tempertureMap[i + 1][width - 1] * cellsPonderation[1][1]);
-            posIzqD =  (this.tempertureMap[i + 1][width - 2] * cellsPonderation[1][0]);
-            posIzq =  (this.tempertureMap[i][width - 2] * cellsPonderation[0][0]);
+                // Calculamos la temperatura de la ultima columna
+                posInc = (this.tempertureMap[i][width - 1] * cellsPonderation[0][1]);
+                posCentD = (this.tempertureMap[i + 1][width - 1] * cellsPonderation[1][1]);
+                posIzqD = (this.tempertureMap[i + 1][width - 2] * cellsPonderation[1][0]);
+                posIzq = (this.tempertureMap[i][width - 2] * cellsPonderation[0][0]);
 
-            mediaTemp = (int) (((posInc + posIzqD + posCentD + posIzq) / (this.cellsDivider)) - fixAtenuationFactor);
-            this.tempertureMap[i][width - 1] = mediaTemp;
+                mediaTemp = (int) (((posInc + posIzqD + posCentD + posIzq) / (this.cellsDivider))
+                        - fixAtenuationFactor);
+                this.tempertureMap[i][width - 1] = mediaTemp;
 
-            // Calculamos todos los valores de entremedias
-            for (int j = 1; j < width - 1; j++) {
+                // Calculamos todos los valores de entremedias
+                for (int j = 1; j < width - 1; j++) {
 
-                posInc =  (this.tempertureMap[i][j] * cellsPonderation[0][1]);
-                posDer =  (this.tempertureMap[i][j + 1] * cellsPonderation[0][2]);
-                posIzq =  (this.tempertureMap[i][j - 1] * cellsPonderation[0][0]);
+                    posInc = (this.tempertureMap[i][j] * cellsPonderation[0][1]);
+                    posDer = (this.tempertureMap[i][j + 1] * cellsPonderation[0][2]);
+                    posIzq = (this.tempertureMap[i][j - 1] * cellsPonderation[0][0]);
 
-                posIzqD = (this.tempertureMap[i + 1][j - 1] * cellsPonderation[0][0]);
-                posCentD = (this.tempertureMap[i + 1][j] * cellsPonderation[1][1]);
-                posDerD =  (this.tempertureMap[i + 1][j + 1] * cellsPonderation[1][2]);
+                    posIzqD = (this.tempertureMap[i + 1][j - 1] * cellsPonderation[0][0]);
+                    posCentD = (this.tempertureMap[i + 1][j] * cellsPonderation[1][1]);
+                    posDerD = (this.tempertureMap[i + 1][j + 1] * cellsPonderation[1][2]);
 
-                mediaTemp = (int) (((posInc + posIzqD + posCentD + posDerD + posDer + posIzq) / this.cellsDivider) - fixAtenuationFactor);
+                    mediaTemp = (int) (((posInc + posIzqD + posCentD + posDerD + posDer + posIzq) / this.cellsDivider)
+                            - fixAtenuationFactor);
 
-                this.tempertureMap[i][j] = mediaTemp;
+                    this.tempertureMap[i][j] = mediaTemp;
+                }
+            }
+
+        } else {
+            for (int i = 0; i < height - 1; i++) {
+                // Calculamos la temperatura de la primera columna
+                posInc = (this.tempertureMap[i][0] * cellsPonderation[0][1]);
+                posDer = (this.tempertureMap[i][1] * cellsPonderation[0][2]);
+                posCentD = (this.tempertureMap[i + 1][0] * cellsPonderation[1][1]);
+                posDerD = (this.tempertureMap[i + 1][1] * cellsPonderation[1][2]);
+
+                mediaTemp = (int) (((posInc + posCentD + posDerD + posDer) / (this.cellsDivider))
+                        - fixAtenuationFactor);
+                this.tempertureMap[i][0] = mediaTemp;
+
+                // Calculamos la temperatura de la ultima columna
+                posInc = (this.tempertureMap[i][width - 1] * cellsPonderation[0][1]);
+                posCentD = (this.tempertureMap[i + 1][width - 1] * cellsPonderation[1][1]);
+                posIzqD = (this.tempertureMap[i + 1][width - 2] * cellsPonderation[1][0]);
+                posIzq = (this.tempertureMap[i][width - 2] * cellsPonderation[0][0]);
+
+                mediaTemp = (int) (((posInc + posIzqD + posCentD + posIzq) / (this.cellsDivider))
+                        - fixAtenuationFactor);
+                this.tempertureMap[i][width - 1] = mediaTemp;
+
+                // Calculamos todos los valores de entremedias
+                for (int j = 1; j < width - 1; j++) {
+
+                    posInc = (this.tempertureMap[i][j] * cellsPonderation[0][1]);
+                    posDer = (this.tempertureMap[i][j + 1] * cellsPonderation[0][2]);
+                    posIzq = (this.tempertureMap[i][j - 1] * cellsPonderation[0][0]);
+
+                    posIzqD = (this.tempertureMap[i + 1][j - 1] * cellsPonderation[0][0]);
+                    posCentD = (this.tempertureMap[i + 1][j] * cellsPonderation[1][1]);
+                    posDerD = (this.tempertureMap[i + 1][j + 1] * cellsPonderation[1][2]);
+
+                    mediaTemp = (int) (((posInc + posIzqD + posCentD + posDerD + posDer + posIzq) / this.cellsDivider)
+                            - fixAtenuationFactor);
+
+                    this.tempertureMap[i][j] = mediaTemp;
+                }
             }
         }
     }
@@ -173,5 +220,13 @@ public class Temperatures {
 
     public void setFixAtenuationFactor(double fixAtenuationFactor) {
         this.fixAtenuationFactor = fixAtenuationFactor;
+    }
+
+    public boolean isBottonUpTemps() {
+        return bottonUpTemps;
+    }
+
+    public void setBottonUpTemps(boolean bottonUpTemps) {
+        this.bottonUpTemps = bottonUpTemps;
     }
 }

@@ -43,7 +43,7 @@ public class FireModel extends BufferedImage {
                 
                 if (tempAct > 255) {
                 
-                    tempAct = 235;
+                    tempAct = 255;
                 } else if (tempAct < 0) {
                 
                     tempAct = 0;

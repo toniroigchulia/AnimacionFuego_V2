@@ -1,10 +1,14 @@
-import java.awt.Container;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 public class ControlPanel extends JPanel {
 
@@ -14,26 +18,59 @@ public class ControlPanel extends JPanel {
     private GeneralConfiguration generalConfiguration;
     private ActionListener actionListener;
     private TemperatureConfiguration temperatureConfiguration;
+    private PaletteConfiguration paletteConfiguration;
 
     private DTOGeneralParameters generalParameters;
     private DTOTemperatureParameters temperatureParameters;
-    private DTOPaletteParameters paletteConfiguration;
+    private DTOPaletteParameters paletteParameters;
     private DTOFireModelParameters fModelParameters;
 
     // CONSTRUCTORES
 
-    public ControlPanel(Container panel, ActionListener actionListener) {
-
+    public ControlPanel(ActionListener actionListener) {
+        this.setLayout(new GridBagLayout());
         this.actionListener = actionListener;
-        this.animationControl = new AnimationControl(panel, actionListener);
-        this.generalConfiguration = new GeneralConfiguration(panel);
-        this.temperatureConfiguration = new TemperatureConfiguration(panel);
+
+        this.animationControl = new AnimationControl(actionListener);
+        this.animationControl.setBorder(new LineBorder(Color.BLACK, 2));
+
+        this.generalConfiguration = new GeneralConfiguration(actionListener);
+        this.generalConfiguration.setBorder(new LineBorder(Color.BLACK, 2));
+
+        this.temperatureConfiguration = new TemperatureConfiguration();
+        this.temperatureConfiguration.setBorder(new LineBorder(Color.BLACK, 2));
+
+        this.paletteConfiguration = new PaletteConfiguration();
+        this.paletteConfiguration.setBorder(new LineBorder(Color.BLACK, 2));
+
+        addPanels();
 
         this.temperatureParameters = new DTOTemperatureParameters();
-        this.paletteConfiguration = new DTOPaletteParameters();
+        this.paletteParameters = new DTOPaletteParameters();
 
         this.generalParameters = new DTOGeneralParameters();
         setDefaultBackgroundImage();
+    }
+
+    public void addPanels() {
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.EAST;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.insets = new Insets(10, 10, 10, 10);
+        this.add(animationControl, c);
+
+        c.gridx = 1;
+        c.gridy = 0;
+        this.add(generalConfiguration, c);
+
+        c.gridy = 1;
+        this.add(temperatureConfiguration, c);
+
+        c.gridy = 1;
+        c.gridx = 0;
+        this.add(paletteConfiguration, c);
     }
 
     // GETTERS AND SETTERS
@@ -63,11 +100,11 @@ public class ControlPanel extends JPanel {
     }
 
     public DTOPaletteParameters getPaletteConfiguration() {
-        return paletteConfiguration;
+        return paletteParameters;
     }
 
-    public void setPaletteConfiguration(DTOPaletteParameters paletteConfiguration) {
-        this.paletteConfiguration = paletteConfiguration;
+    public void setPaletteConfiguration(DTOPaletteParameters paletteParameters) {
+        this.paletteParameters = paletteParameters;
     }
 
     public ActionListener getActionListener() {
@@ -79,7 +116,7 @@ public class ControlPanel extends JPanel {
     }
 
     public DTOFireModelParameters getfModelParameters() {
-        this.fModelParameters = new DTOFireModelParameters(generalParameters, paletteConfiguration,
+        this.fModelParameters = new DTOFireModelParameters(generalParameters, paletteParameters,
                 temperatureParameters);
         return fModelParameters;
     }

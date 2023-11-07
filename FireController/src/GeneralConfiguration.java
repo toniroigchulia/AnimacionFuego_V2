@@ -1,11 +1,17 @@
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import java.awt.Insets;
+import javax.swing.border.LineBorder;
 
-public class GeneralConfiguration extends JPanel{
+import java.awt.Insets;
+import java.awt.event.ActionListener;
+
+public class GeneralConfiguration extends JPanel {
 
     // ATRIBUTOS
 
@@ -20,92 +26,98 @@ public class GeneralConfiguration extends JPanel{
     private JLabel imageName;
     private JLabel directName;
     private JLabel imgResolution;
+    private JButton imageButton;
+    private ActionListener actionListener;
 
     // CONTRUCTOR
 
-    public GeneralConfiguration(Container panel) {
-
-        addButtonsToPane(panel);
+    public GeneralConfiguration(ActionListener actionListener) {
+        this.setLayout(new GridBagLayout());
+        this.actionListener = actionListener;
+        addContentToPane(this);
     }
 
     // METODOS
 
-    private void addButtonsToPane(Container panel) {
+    private void addContentToPane(Container panel) {
         GridBagConstraints c = new GridBagConstraints();
-
         c.anchor = GridBagConstraints.NORTHWEST;
-        c.fill = GridBagConstraints.BOTH;
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
-        c.weightx = 0;
-        c.weighty = 0;
-        c.gridheight = 1;
-        c.gridwidth = 1;
+        c.gridy = 0;
+        c.weightx = 1;
 
         // Heigh
-        c.gridy = 5;
-        c.insets = new Insets(5, 10, 1, 10);
+        c.insets = new Insets(10, 10, 1, 10);
         heighName = new JLabel("Heigh");
         panel.add(heighName, c);
 
-        c.gridy ++;
+        c.gridy++;
         c.insets = new Insets(1, 10, 1, 10);
         heigh = new JTextField(20);
         heigh.setText("0");
         panel.add(heigh, c);
 
         // Width
-        c.gridy ++;
+        c.gridy++;
         c.insets = new Insets(10, 10, 1, 10);
         widthName = new JLabel("Width");
         panel.add(widthName, c);
 
-        c.gridy ++;
+        c.gridy++;
         c.insets = new Insets(1, 10, 1, 10);
         width = new JTextField(20);
         width.setText("0");
         panel.add(width, c);
 
         // PosX
-        c.gridy ++;
+        c.gridy++;
         c.insets = new Insets(10, 10, 1, 10);
         posxName = new JLabel("PosX");
         panel.add(posxName, c);
 
-        c.gridy ++;
+        c.gridy++;
         c.insets = new Insets(1, 10, 1, 10);
         posX = new JTextField(20);
         posX.setText("0");
         panel.add(posX, c);
 
         // PosY
-        c.gridy ++;
+        c.gridy++;
         c.insets = new Insets(10, 10, 1, 10);
         posyName = new JLabel("PosY");
         panel.add(posyName, c);
 
-        c.gridy ++;
+        c.gridy++;
         c.insets = new Insets(1, 10, 10, 10);
         posY = new JTextField(20);
         posY.setText("0");
         panel.add(posY, c);
 
         // Nombre Imagen
-        c.gridy = 14;
+        c.gridy++;
         c.insets = new Insets(5, 10, 1, 10);
         imageName = new JLabel("");
         panel.add(imageName, c);
 
         // Directorio de la imagen
-        c.gridy ++;
+        c.gridy++;
         c.insets = new Insets(5, 10, 1, 10);
         directName = new JLabel("");
         panel.add(directName, c);
 
         // Reslucion imagen
-        c.gridy ++;
+        c.gridy++;
         c.insets = new Insets(5, 10, 10, 10);
         imgResolution = new JLabel("");
         panel.add(imgResolution, c);
+
+        // ImageButton
+        c.gridy++;
+        c.insets = new Insets(10, 10, 10, 10);
+        imageButton = new JButton("Change Background");
+        imageButton.addActionListener(actionListener);
+        panel.add(imageButton, c);
     }
 
     public void resetValues() {
@@ -122,7 +134,7 @@ public class GeneralConfiguration extends JPanel{
         return heighName;
     }
 
-    public int getHeigh() {
+    public int getFireHeigh() {
         return Integer.parseInt(heigh.getText());
     }
 
@@ -130,7 +142,7 @@ public class GeneralConfiguration extends JPanel{
         return widthName;
     }
 
-    public int getWidth() {
+    public int getFireWidth() {
         return Integer.parseInt(width.getText());
     }
 
@@ -138,7 +150,7 @@ public class GeneralConfiguration extends JPanel{
         return posxName;
     }
 
-    public int getPosX() {
+    public int getFirePosX() {
         return Integer.parseInt(posX.getText());
     }
 
@@ -146,7 +158,7 @@ public class GeneralConfiguration extends JPanel{
         return posyName;
     }
 
-    public int getPosY() {
+    public int getFirePosY() {
         return Integer.parseInt(posY.getText());
     }
 

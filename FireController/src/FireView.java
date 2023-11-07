@@ -1,6 +1,6 @@
-import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -19,55 +19,48 @@ public class FireView extends JFrame {
    private ControlPanel controlPanel;
    private FireController controller;
    private ActionListener actionListener;
-   private Container panel;
    private boolean updated = true;
 
    // CONSTRUCTORES
 
    public FireView(FireController controller) {
 
-      this.viewer = new Viewer();
       this.controller = controller;
+      this.viewer = new Viewer();
       actionListener = new Listener();
+      this.controlPanel = new ControlPanel(actionListener);
       configureFrame();
 
-      this.controlPanel = new ControlPanel(panel, actionListener);
 
       this.viewer.loadBackground(controlPanel.getGeneralParameters().getBackgroundImage());
-      this.setSize(1200, 920);
+      this.setSize(1150, 900);
+      // this.setResizable(false);
    }
 
    // METODOS
 
    // Añadir componenetes a la UI y configurar el frame
    private void addUIComponents() {
+      GridBagConstraints c = new GridBagConstraints();
+      c.insets = new Insets(5, 5, 5, 5);
+      c.anchor = GridBagConstraints.WEST;
+      c.fill = GridBagConstraints.BOTH;
 
-      this.panel = this.getContentPane();
-      addViewerToPane(panel);
+      c.gridx = 0;
+      c.gridy = 0;
+      add(controlPanel, c);
+
+      c.gridx = 1;
+      c.gridy = 0;
+      c.weightx = 1;
+      add(viewer, c);
    }
 
    private void configureFrame() {
-
       this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       this.setLayout(new GridBagLayout());
       this.setVisible(true);
       addUIComponents();
-   }
-
-   // Grid para la animacion
-   private void addViewerToPane(Container panel) {
-      GridBagConstraints c = new GridBagConstraints();
-
-      c.anchor = GridBagConstraints.NORTHWEST;
-      c.fill = GridBagConstraints.BOTH;
-      c.gridx = 1;
-      c.gridy = 0;
-      c.weightx = 1;
-      c.weighty = 1;
-      c.gridheight = 50;
-      c.gridwidth = 1;
-
-      panel.add(this.viewer, c);
    }
 
    // GETTERS AND SETTERS
@@ -116,32 +109,40 @@ public class FireView extends JFrame {
                controller.setAnimation(false);
                controlPanel.setGeneralParameters(new DTOGeneralParameters());
                controlPanel.setTemperatureParameters(new DTOTemperatureParameters());
-               
+
                controlPanel.getAnimationControl().getAplly().setEnabled(true);
-               
+
                // Poner el background Default
                controlPanel.setDefaultBackgroundImage();
                viewer.loadBackground(controlPanel.getGeneralParameters().getBackgroundImage());
 
-               controlPanel.getGeneralConfiguration().resetValues();
+               // controlPanel.getGeneralConfiguration().resetValues();
                controlPanel.getTemperatureConfiguration().defaultValues();
                updated = true;
                break;
             // Aplicar los cambios
             case "Apply":
 
-                  controlPanel.getGeneralParameters().setFireHight(controlPanel.getGeneralConfiguration().getHeigh());
-                  controlPanel.getGeneralParameters().setFireWidth(controlPanel.getGeneralConfiguration().getWidth());
-                  controlPanel.getGeneralParameters().setFirXPosition(controlPanel.getGeneralConfiguration().getPosX());
-                  controlPanel.getGeneralParameters().setFireYPosition(controlPanel.getGeneralConfiguration().getPosY());
+               // Configuracion general
+               controlPanel.getGeneralParameters().setFireHight(controlPanel.getGeneralConfiguration().getFireHeigh());
+               controlPanel.getGeneralParameters().setFireWidth(controlPanel.getGeneralConfiguration().getFireWidth());
+               controlPanel.getGeneralParameters().setFirXPosition(controlPanel.getGeneralConfiguration().getFirePosX());
+               controlPanel.getGeneralParameters().setFireYPosition(controlPanel.getGeneralConfiguration().getFirePosY());
 
-                  controlPanel.getTemperatureParameters().setBottonUpTemps(controlPanel.getTemperatureConfiguration().bottomUpTemps());
-                  controlPanel.getTemperatureParameters().setNewCoolPixelsPercentage(controlPanel.getTemperatureConfiguration().getNewCoolPixelsPercentage());
-                  controlPanel.getTemperatureParameters().setNewHotPixelsPercentage(controlPanel.getTemperatureConfiguration().getNewHotPixelsPercentage());
-                  controlPanel.getTemperatureParameters().setCellsDivider(controlPanel.getTemperatureConfiguration().getCellsDivider());
-                  controlPanel.getTemperatureParameters().setCellsPonderation(controlPanel.getTemperatureConfiguration().getCellsPonderation());
-                  controlPanel.getTemperatureParameters().setFixAtenuationFactor(controlPanel.getTemperatureConfiguration().getFixAtenuationFactor());
-
+               // Configuracion del calculo del fuego
+               controlPanel.getTemperatureParameters()
+                     .setBottonUpTemps(controlPanel.getTemperatureConfiguration().bottomUpTemps());
+               controlPanel.getTemperatureParameters().setNewCoolPixelsPercentage(
+                     controlPanel.getTemperatureConfiguration().getNewCoolPixelsPercentage());
+               controlPanel.getTemperatureParameters()
+                     .setNewHotPixelsPercentage(controlPanel.getTemperatureConfiguration().getNewHotPixelsPercentage());
+               controlPanel.getTemperatureParameters()
+                     .setCellsDivider(controlPanel.getTemperatureConfiguration().getCellsDivider());
+               controlPanel.getTemperatureParameters()
+                     .setCellsPonderation(controlPanel.getTemperatureConfiguration().getCellsPonderation());
+               controlPanel.getTemperatureParameters()
+                     .setFixAtenuationFactor(controlPanel.getTemperatureConfiguration().getFixAtenuationFactor());
+               controlPanel.getTemperatureParameters().setBottonUpTemps(controlPanel.getTemperatureConfiguration().bottomUpTemps());
                updated = true;
                break;
             // Cambiar el Background

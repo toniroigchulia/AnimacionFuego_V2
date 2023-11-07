@@ -6,14 +6,14 @@ public class DTOTemperatureParameters {
     private float newCoolPixelsPercentage = 0.9f;
     private float newHotPixelsPercentage = 0.3f;
     private double[][] cellsPonderation = new double[2][3];
-    private double cellsDivider = 6.2;
-    private double fixAtenuationFactor = 4;
-    private boolean bottonUpTemps;
+    private double cellsDivider = 5.8;
+    private double fixAtenuationFactor = 3;
+    private boolean bottonUpTemps = true;
 
     // CONSTRUCTOR
 
     public DTOTemperatureParameters() {
-        
+
         setDefaultCellPonderation();
     }
 
@@ -66,11 +66,12 @@ public class DTOTemperatureParameters {
     public void setBottonUpTemps(boolean bottonUpTemps) {
         this.bottonUpTemps = bottonUpTemps;
     }
-    
+
     public void setDefaultCellPonderation() {
-        
-        this.cellsPonderation[0][0] = this.cellsPonderation[0][2] = 1.2d;
-        this.cellsPonderation[0][1] = 1.5d;
-        this.cellsPonderation[1][0] = this.cellsPonderation[1][1] = this.cellsPonderation[1][2] = 0.7d;
+
+        this.cellsPonderation[0][0] = this.cellsPonderation[0][2] = 1d;
+        this.cellsPonderation[0][1] = 1d;
+        this.cellsPonderation[1][0] = this.cellsPonderation[1][2] = 1d;
+        this.cellsPonderation[1][1] = 1d;
     }
 }

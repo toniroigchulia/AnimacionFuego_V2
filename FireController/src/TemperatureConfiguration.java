@@ -1,14 +1,16 @@
 import java.awt.Container;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
-public class TemperatureConfiguration {
+public class TemperatureConfiguration extends JPanel {
 
     // ATRIBUTOS
 
@@ -24,9 +26,9 @@ public class TemperatureConfiguration {
     private JTextField fixAtenuationFactor;
     private JToggleButton bottomUpTemps;
 
-    public TemperatureConfiguration(Container panel) {
-
-        addContentToPane(panel);
+    public TemperatureConfiguration() {
+        this.setLayout(new GridBagLayout());
+        addContentToPane(this);
         defaultValues();
     }
 
@@ -36,13 +38,9 @@ public class TemperatureConfiguration {
         c.anchor = GridBagConstraints.NORTHWEST;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
-        c.weightx = 0;
-        c.weighty = 0;
-        c.gridheight = 1;
-        c.gridwidth = 1;
+        c.gridy = 0;
 
         // NewCollPixelsPercentage
-        c.gridy = 17;
         c.insets = new Insets(10, 10, 1, 10);
         newCoolPixelsPercentageName = new JLabel("CoolPixelsPercentage");
         panel.add(newCoolPixelsPercentageName, c);
@@ -70,7 +68,7 @@ public class TemperatureConfiguration {
         panel.add(cellsPonderationName, c);
 
         c.gridy++;
-        c.insets = new Insets(10, 10, 1, 10);
+        c.insets = new Insets(5, 10, 1, 10);
         cellsPonderation = new JTable(2, 3);
         panel.add(cellsPonderation, c);
 
@@ -98,23 +96,24 @@ public class TemperatureConfiguration {
 
         // BottomUpTemps
         c.gridy++;
-        c.insets = new Insets(10, 10, 1, 10);
+        c.insets = new Insets(10, 10, 5, 10);
         bottomUpTemps = new JToggleButton("BottomUpTemps");
         panel.add(bottomUpTemps, c);
     }
 
     public void defaultValues() {
-        cellsPonderation.setValueAt("1.2", 0, 0);
-        cellsPonderation.setValueAt("1.2", 0, 2);
-        cellsPonderation.setValueAt("1.3", 0, 1);
+        cellsPonderation.setValueAt("1", 0, 0);
+        cellsPonderation.setValueAt("1", 0, 2);
+        cellsPonderation.setValueAt("1", 0, 1);
         cellsPonderation.setValueAt("1", 1, 1);
-        cellsPonderation.setValueAt("0.7", 1, 2);
-        cellsPonderation.setValueAt("0.7", 1, 0);
-        
-        fixAtenuationFactor.setText("4");
-        cellsDivider.setText("6.2");
+        cellsPonderation.setValueAt("1", 1, 2);
+        cellsPonderation.setValueAt("1", 1, 0);
+
+        fixAtenuationFactor.setText("3");
+        cellsDivider.setText("5.8");
         newCoolPixelsPercentage.setValue(90);
         newHotPixelsPercentage.setValue(30);
+        bottomUpTemps.setSelected(true);
     }
 
     // GETTERS AND SETTERS
@@ -132,8 +131,8 @@ public class TemperatureConfiguration {
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 3; j++) {
-                
-                cellsPonderationMatrix[i][j] = Double.parseDouble(cellsPonderation.getValueAt(i, j)+"");
+
+                cellsPonderationMatrix[i][j] = Double.parseDouble(cellsPonderation.getValueAt(i, j) + "");
             }
         }
 
