@@ -31,10 +31,8 @@ public class FireView extends JFrame {
       this.controlPanel = new ControlPanel(actionListener);
       configureFrame();
 
-
       this.viewer.loadBackground(controlPanel.getGeneralParameters().getBackgroundImage());
       this.setSize(1150, 900);
-      // this.setResizable(false);
    }
 
    // METODOS
@@ -96,7 +94,6 @@ public class FireView extends JFrame {
                controller.setAnimation(true);
                controlPanel.getAnimationControl().getAplly().setEnabled(false);
                break;
-
             // Parar la animacion
             case "Stop":
 
@@ -105,7 +102,7 @@ public class FireView extends JFrame {
                break;
             // Resetear los parametors a los default
             case "Reset":
-
+               controlPanel.initiatePanels();
                controller.setAnimation(false);
                controlPanel.setGeneralParameters(new DTOGeneralParameters());
                controlPanel.setTemperatureParameters(new DTOTemperatureParameters());
@@ -123,13 +120,15 @@ public class FireView extends JFrame {
             // Aplicar los cambios
             case "Apply":
 
-               // Configuracion general
+               // DTOGeneralParameter
                controlPanel.getGeneralParameters().setFireHight(controlPanel.getGeneralConfiguration().getFireHeigh());
                controlPanel.getGeneralParameters().setFireWidth(controlPanel.getGeneralConfiguration().getFireWidth());
-               controlPanel.getGeneralParameters().setFirXPosition(controlPanel.getGeneralConfiguration().getFirePosX());
-               controlPanel.getGeneralParameters().setFireYPosition(controlPanel.getGeneralConfiguration().getFirePosY());
+               controlPanel.getGeneralParameters()
+                     .setFirXPosition(controlPanel.getGeneralConfiguration().getFirePosX());
+               controlPanel.getGeneralParameters()
+                     .setFireYPosition(controlPanel.getGeneralConfiguration().getFirePosY());
 
-               // Configuracion del calculo del fuego
+               // DTOTemperatureParameters
                controlPanel.getTemperatureParameters()
                      .setBottonUpTemps(controlPanel.getTemperatureConfiguration().bottomUpTemps());
                controlPanel.getTemperatureParameters().setNewCoolPixelsPercentage(
@@ -142,7 +141,13 @@ public class FireView extends JFrame {
                      .setCellsPonderation(controlPanel.getTemperatureConfiguration().getCellsPonderation());
                controlPanel.getTemperatureParameters()
                      .setFixAtenuationFactor(controlPanel.getTemperatureConfiguration().getFixAtenuationFactor());
-               controlPanel.getTemperatureParameters().setBottonUpTemps(controlPanel.getTemperatureConfiguration().bottomUpTemps());
+               controlPanel.getTemperatureParameters()
+                     .setBottonUpTemps(controlPanel.getTemperatureConfiguration().bottomUpTemps());
+
+               // DTOPaletterParameters
+               controlPanel.getPaletteParameters()
+                     .addColorTargets(controlPanel.getPaletteConfiguration().getColorTargets());
+
                updated = true;
                break;
             // Cambiar el Background

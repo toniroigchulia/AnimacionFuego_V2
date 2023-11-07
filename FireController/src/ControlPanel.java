@@ -5,7 +5,6 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -30,7 +29,18 @@ public class ControlPanel extends JPanel {
     public ControlPanel(ActionListener actionListener) {
         this.setLayout(new GridBagLayout());
         this.actionListener = actionListener;
+        
+        initiatePanels();
+        
+        this.temperatureParameters = new DTOTemperatureParameters();
+        this.paletteParameters = new DTOPaletteParameters();
+        this.generalParameters = new DTOGeneralParameters();
+        setDefaultBackgroundImage();
+    }
 
+    public void initiatePanels() {
+        this.removeAll();
+        
         this.animationControl = new AnimationControl(actionListener);
         this.animationControl.setBorder(new LineBorder(Color.BLACK, 2));
 
@@ -44,15 +54,9 @@ public class ControlPanel extends JPanel {
         this.paletteConfiguration.setBorder(new LineBorder(Color.BLACK, 2));
 
         addPanels();
-
-        this.temperatureParameters = new DTOTemperatureParameters();
-        this.paletteParameters = new DTOPaletteParameters();
-
-        this.generalParameters = new DTOGeneralParameters();
-        setDefaultBackgroundImage();
     }
 
-    public void addPanels() {
+    private void addPanels() {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.EAST;
@@ -99,8 +103,8 @@ public class ControlPanel extends JPanel {
         this.temperatureParameters = temperatureParameters;
     }
 
-    public DTOPaletteParameters getPaletteConfiguration() {
-        return paletteParameters;
+    public PaletteConfiguration getPaletteConfiguration() {
+        return paletteConfiguration;
     }
 
     public void setPaletteConfiguration(DTOPaletteParameters paletteParameters) {
@@ -134,7 +138,7 @@ public class ControlPanel extends JPanel {
         try {
 
             File selectedFile = new File(
-                    "imagen\\bg.jpg");
+                    "C:\\Users\\toni1\\OneDrive\\Documentos\\DAM\\2nDAM\\Interfaces\\AnimacionFuego_V2\\AnimacionFuego_V2\\imagen\\bg.jpg");
             BufferedImage selectedImage = ImageIO.read(selectedFile);
             generalParameters.setBackgroundImage(selectedImage);
             generalConfiguration.setImageParameters(selectedFile.getName(),
@@ -155,5 +159,17 @@ public class ControlPanel extends JPanel {
 
     public void setTemperatureConfiguration(TemperatureConfiguration temperatureConfiguration) {
         this.temperatureConfiguration = temperatureConfiguration;
+    }
+
+    public void setPaletteConfiguration(PaletteConfiguration paletteConfiguration) {
+        this.paletteConfiguration = paletteConfiguration;
+    }
+
+    public DTOPaletteParameters getPaletteParameters() {
+        return paletteParameters;
+    }
+
+    public void setPaletteParameters(DTOPaletteParameters paletteParameters) {
+        this.paletteParameters = paletteParameters;
     }
 }
