@@ -32,17 +32,17 @@ public class PaletteConfiguration extends JPanel {
     private void addContentToPane(Container panel) {
         GridBagConstraints c = new GridBagConstraints();
         Object[][] data = {
-                { new Color(0, 0, 0, 0), 0 },
-                { new Color(0, 0, 0, 100), 55 },
-                { new Color(155, 0, 0, 110), 60 },
-                { new Color(200, 100, 0, 180), 72 },
-                { new Color(235, 235, 40, 250), 112 },
-                { new Color(255, 255, 200, 255), 130 },
-                { new Color(255, 255, 255, 255), 155 },
-                { new Color(255, 255, 255, 255), 255 }
+                { new Color(0, 0, 0, 0), 0, "Remove"},
+                { new Color(0, 0, 0, 100), 55, "Remove"},
+                { new Color(155, 0, 0, 110), 60, "Remove"},
+                { new Color(200, 100, 0, 180), 72, "Remove"},
+                { new Color(235, 235, 40, 250), 112, "Remove"},
+                { new Color(255, 255, 200, 255), 130, "Remove"},
+                { new Color(255, 255, 255, 255), 155, "Remove"},
+                { new Color(255, 255, 255, 255), 255, "Remove"}
         };
 
-        String[] columnNames = { "Temperature", "TargetColor" };
+        String[] columnNames = { "Temperature", "TargetColor", "Remove" };
         DefaultTableModel model = new DefaultTableModel(data, columnNames) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -51,12 +51,12 @@ public class PaletteConfiguration extends JPanel {
 
             @Override
             public boolean isCellEditable(int row, int column) {
-                
-                if (row == table.getRowCount() - 1 || row == 0){
-                    
+
+                if (row == table.getRowCount() - 1 || row == 0) {
+
                     return false;
                 } else {
-                
+
                     return true;
                 }
             }
@@ -73,7 +73,7 @@ public class PaletteConfiguration extends JPanel {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object[] row = { new Color(255, 255, 255, 255), 255 };
+                Object[] row = { new Color(255, 255, 255, 255), 255, "Remove" };
                 model.addRow(row);
             }
         });
@@ -153,7 +153,7 @@ public class PaletteConfiguration extends JPanel {
         private Color selectedColor;
 
         public ColorChooserPanel() {
-            selectedColor = JColorChooser.showDialog(ColorChooserPanel.this, "Elegir Color", selectedColor);
+            selectedColor = JColorChooser.showDialog(ColorChooserPanel.this, "Color Chooser", selectedColor);
         }
 
         Color getColor() {
