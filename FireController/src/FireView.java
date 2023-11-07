@@ -106,6 +106,7 @@ public class FireView extends JFrame {
                controller.setAnimation(false);
                controlPanel.setGeneralParameters(new DTOGeneralParameters());
                controlPanel.setTemperatureParameters(new DTOTemperatureParameters());
+               controlPanel.setPaletteParameters(new DTOPaletteParameters());
 
                controlPanel.getAnimationControl().getAplly().setEnabled(true);
 
@@ -115,6 +116,7 @@ public class FireView extends JFrame {
 
                // controlPanel.getGeneralConfiguration().resetValues();
                controlPanel.getTemperatureConfiguration().defaultValues();
+
                revalidate();
                repaint();
                updated = true;

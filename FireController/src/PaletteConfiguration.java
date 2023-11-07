@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.AbstractCellEditor;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,7 +18,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
+import javax.swing.table.TableCellRenderer;
 
 public class PaletteConfiguration extends JPanel {
 
@@ -32,14 +34,14 @@ public class PaletteConfiguration extends JPanel {
     private void addContentToPane(Container panel) {
         GridBagConstraints c = new GridBagConstraints();
         Object[][] data = {
-                { new Color(0, 0, 0, 0), 0, "Remove"},
-                { new Color(0, 0, 0, 100), 55, "Remove"},
-                { new Color(155, 0, 0, 110), 60, "Remove"},
-                { new Color(200, 100, 0, 180), 72, "Remove"},
-                { new Color(235, 235, 40, 250), 112, "Remove"},
-                { new Color(255, 255, 200, 255), 130, "Remove"},
-                { new Color(255, 255, 255, 255), 155, "Remove"},
-                { new Color(255, 255, 255, 255), 255, "Remove"}
+                { new Color(0, 0, 0, 0), 0, "X" },
+                { new Color(0, 0, 0, 100), 55, "X" },
+                { new Color(155, 0, 0, 110), 60, "X" },
+                { new Color(200, 100, 0, 180), 72, "X" },
+                { new Color(235, 235, 40, 250), 112, "X" },
+                { new Color(255, 255, 200, 255), 130, "X" },
+                { new Color(255, 255, 255, 255), 155, "X" },
+                { new Color(255, 255, 255, 255), 255, "X" }
         };
 
         String[] columnNames = { "Temperature", "TargetColor", "Remove" };
@@ -63,22 +65,25 @@ public class PaletteConfiguration extends JPanel {
         };
 
         table = new JTable(model);
-        TableColumn colorColumn = this.table.getColumnModel().getColumn(0);
+        // Añadimos a la primera columna la capacidad para elejir color y guardarlo en esta
+        this.table.getColumnModel().getColumn(0).setCellEditor(new ColorChooserEditor());
+        this.table.getColumnModel().getColumn(0).setCellRenderer(new ColorChooserRenderer());
 
-        colorColumn.setCellEditor(new ColorChooserEditor());
-        colorColumn.setCellRenderer(new ColorChooserRenderer());
+        // Añadimos a la tercera columna el boton de eliminar columa
+        this.table.getColumn("Remove").setCellRenderer(new ColorChooserButtonRenderer());
+        this.table.getColumn("Remove").setCellEditor(new ColorChooserButtonEditor(new JCheckBox(), table));
         table.setRowHeight(20);
 
         JButton addButton = new JButton("Add Row");
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object[] row = { new Color(255, 255, 255, 255), 255, "Remove" };
+                Object[] row = { new Color(255, 255, 255, 255), 255, "X" };
                 model.addRow(row);
             }
         });
 
-        // Add column headers
+        // Añadimos los column headers
         c.gridy = 1;
         c.gridx = 0;
         c.insets = new Insets(1, 1, 1, 5);
@@ -89,7 +94,7 @@ public class PaletteConfiguration extends JPanel {
         RGBA = new JLabel("Temp");
         panel.add(RGBA, c);
 
-        // Add the table
+        // Añadimos la table
         c.fill = GridBagConstraints.BOTH;
         c.gridy = 2;
         c.gridx = 0;
@@ -98,10 +103,12 @@ public class PaletteConfiguration extends JPanel {
         c.weighty = 1;
         panel.add(table, c);
 
-        // Add the button
+        // Añadimos el boton para los rows
         c.gridy = 0;
         panel.add(addButton, c);
     }
+
+    // METODOS
 
     public ArrayList<ColorTarget> getColorTargets() {
         ArrayList<ColorTarget> colorTargets = new ArrayList<ColorTarget>();
@@ -162,6 +169,53 @@ public class PaletteConfiguration extends JPanel {
 
         void setColor(Color color) {
             selectedColor = color;
+        }
+    }
+
+    // Metodo para añadir la funcionalidad al boton de la tabla
+    public class ColorChooserButtonEditor extends DefaultCellEditor {
+        protected JButton button;
+
+        public ColorChooserButtonEditor(JCheckBox checkBox, JTable table) {
+            super(checkBox);
+            button = new JButton();
+            button.setOpaque(true);
+            button.setText("X");
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int modelRow = table.convertRowIndexToModel(table.getEditingRow());
+                    ((DefaultTableModel) table.getModel()).removeRow(modelRow);
+                    fireEditingStopped();
+                }
+            });
+        }
+
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
+                int column) {
+            if (isSelected) {
+                button.setForeground(table.getSelectionForeground());
+                button.setBackground(table.getSelectionBackground());
+            } else {
+                button.setForeground(table.getForeground());
+                button.setBackground(table.getBackground());
+            }
+            button.setText("X");
+            return button;
+        }
+    }
+
+    // Metodo Para renderizar el boton en la casilla
+    public class ColorChooserButtonRenderer extends JButton implements TableCellRenderer {
+        public ColorChooserButtonRenderer() {
+            setOpaque(true);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+                int row, int column) {
+            setText("X");
+            return this;
         }
     }
 }
